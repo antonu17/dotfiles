@@ -1,0 +1,44 @@
+#!/bin/bash
+
+set -x
+
+PRIMARY_DISPLAY="eDP-1"
+
+connect() {
+    SECONDARY_DISPLAY=$(xrandr --current | grep " connected " | grep -v "$PRIMARY_DISPLAY" | cut -d ' ' -f 1)
+    if [[ -z "$SECONDARY_DISPLAY" ]]; then
+        echo "Secondary display is not connected"
+        exit
+    fi
+    PRIMARY_DISPLAY_Y=$(xrandr --current | grep -A 1 "^$PRIMARY_DISPLAY " | tail -n+2 | grep -oE "[0-9]+x[0-9]+" | cut -d 'x' -f 2)
+    SECONDARY_DISPLAY_Y=$(xrandr --current | grep -A 1 "^$SECONDARY_DISPLAY " | tail -n+2 | grep -oE "[0-9]+x[0-9]+" | cut -d 'x' -f 2)
+    [[ "$PRIMARY_DISPLAY_Y" -lt "$SECONDARY_DISPLAY_Y" ]] && SCALE_FACTOR=1 || SCALE_FACTOR=2
+    xrandr --output "$PRIMARY_DISPLAY" --primary --auto --pos "0x$((SECONDARY_DISPLAY_Y * SCALE_FACTOR))" --output "$SECONDARY_DISPLAY" --auto --pos 0x0 --scale "${SCALE_FACTOR}x${SCALE_FACTOR}"
+}
+
+disconnect() {
+    SECONDARY_DISPLAY=$(xrandr --current | grep -E "(dis)?connected" | grep -v "$PRIMARY_DISPLAY" | grep -E "[0-9]+x[0-9]+" | cut -d ' ' -f 1)
+    if [[ -z "$SECONDARY_DISPLAY" ]]; then
+        echo "Secondary display is already disconnected"
+        exit
+    fi
+    xrandr --output "$PRIMARY_DISPLAY" --primary --auto --pos 0x0 --output "$SECONDARY_DISPLAY" --off
+}
+
+usage() {
+    echo "Usage $0 connect | disconnect"
+    exit 1
+}
+
+if [[ $# -eq 0 ]]; then
+    usage
+fi
+
+case "$1" in
+    "connect")
+        connect;;
+    "disconnect")
+        disconnect;;
+    *)
+        usage;;
+esac
