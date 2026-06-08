@@ -15,6 +15,16 @@ bindkey '^[[B' down-line-or-beginning-search
 bindkey '^[OA' up-line-or-beginning-search
 bindkey '^[OB' down-line-or-beginning-search
 
+# Personal habbits
+export PATH="$HOME/bin:$PATH"
+export EDITOR="nvim"
+export WORDCHARS="*?_-.[]~=&;!#$%^(){}<>"
+bindkey "^[^H" backward-kill-word
+bindkey "^[^?" backward-kill-word
+alias cdp='cd ~/projects'
+alias code='zed'
+alias ssh='kitten ssh'
+
 eval "$(/opt/homebrew/bin/brew shellenv zsh)"
 eval "$(direnv hook zsh)"
 eval "$(starship init zsh)"
@@ -25,16 +35,6 @@ source <(fzf --zsh)
 autoload -Uz compinit && compinit
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
-
-# Personal habbits
-export PATH="$HOME/bin:$PATH"
-export EDITOR="nvim"
-export WORDCHARS="*?_-.[]~=&;!#$%^(){}<>"
-bindkey "^[^H" backward-kill-word
-bindkey "^[^?" backward-kill-word
-alias cdp='cd ~/projects'
-alias code='zed'
-alias ssh='kitten ssh'
 
 # Git
 alias git_current_branch='git rev-parse --short HEAD'
