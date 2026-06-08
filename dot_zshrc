@@ -27,7 +27,7 @@ zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 
 # Personal habbits
-export PATH="~/bin:$PATH"
+export PATH="$HOME/bin:$PATH"
 export EDITOR="nvim"
 export WORDCHARS="*?_-.[]~=&;!#$%^(){}<>"
 bindkey "^[^H" backward-kill-word
