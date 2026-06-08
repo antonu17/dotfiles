@@ -23,11 +23,16 @@ export WORDCHARS="*?_-.[]~=&;!#$%^(){}<>"
 bindkey "^[^H" backward-kill-word
 bindkey "^[^?" backward-kill-word
 alias cdp='cd /Users/anton/projects'
-alias code='zed'
-alias ssh='kitten ssh'
+
+{{- if eq .chezmoi.os "darwin" }}
 export LIMA_SHELLENV_ALLOW="GITHUB_TOKEN"
-alias agent-vm='SSH="kitten ssh" limactl shell --preserve-env agent-vm'
+export SSH="kitten ssh"
+export LIMA_INSTANCE="agent-vm"
 export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+alias ssh='kitten ssh'
+alias agent-vm='limactl shell --preserve-env agent-vm'
+alias code='zed'
+{{- end }}
 
 {{- if stat "/opt/homebrew/bin/brew" }}
 eval "$(/opt/homebrew/bin/brew shellenv zsh)"
