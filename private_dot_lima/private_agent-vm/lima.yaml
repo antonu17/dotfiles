@@ -63,3 +63,5 @@ provision:
   script: |
     #!/bin/bash
     sh -c "$(curl -fsLS https://get.chezmoi.io)" -- init --apply antonu17
+    curl https://mise.run | MISE_INSTALL_PATH=~/bin/mise sh
+    curl -sS https://starship.rs/install.sh | BIN_DIR=~/bin sh
