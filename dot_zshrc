@@ -1,0 +1,134 @@
+# Histroy settings
+export HISTSIZE=100000
+export SAVEHIST=100000
+export HISTFILE=~/.zsh_history
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
+setopt SHARE_HISTORY
+
+# Search history
+autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey '^[[A' up-line-or-beginning-search
+bindkey '^[[B' down-line-or-beginning-search
+bindkey '^[OA' up-line-or-beginning-search
+bindkey '^[OB' down-line-or-beginning-search
+
+eval "$(/opt/homebrew/bin/brew shellenv zsh)"
+eval "$(direnv hook zsh)"
+eval "$(starship init zsh)"
+eval "$(mise activate zsh)"
+source <(fzf --zsh)
+
+# Autocompletion configuration
+autoload -Uz compinit && compinit
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+
+# Personal habbits
+export EDITOR="nvim"
+export WORDCHARS=${WORDCHARS//\//}
+bindkey "^[^H" backward-kill-word
+bindkey "^[^?" backward-kill-word
+alias cdp='cd ~/projects'
+alias code='zed'
+alias ssh='kitten ssh'
+
+# Git
+alias git_current_branch='git rev-parse --short HEAD'
+alias git_main_branch='b=$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null) && echo "${b#origin/}"'
+alias git_develop_branch='found=; for b in dev devel develop development; do if git show-ref -q --verify "refs/heads/$b"; then echo "$b"; found=1; break; fi; done; [ -n "$found" ] || echo develop'
+alias g='git'
+alias ga='git add'
+alias gb='git branch'
+alias gbD='git branch --delete --force'
+alias gbg='LANG=C git branch -vv | grep ": gone\]"'
+alias gbda='git branch --no-color --merged | command grep -vE "^([+*]|\s*($(git_main_branch)|$(git_develop_branch))\s*$)" | command xargs git branch --delete 2>/dev/null'
+alias gbds='LANG=C git branch --no-color -vv | grep ": gone\]" | cut -c 3- | awk '\''{print $1}'\'' | xargs git branch -D'
+alias gc='git commit --verbose'
+alias gcb='git checkout -b'
+alias gcmsg='git commit --message'
+alias gcssm='git commit --gpg-sign --signoff --message'
+alias gcm='git checkout $(git_main_branch)'
+alias gcn='git commit --verbose --no-edit'
+alias 'gcn!'='git commit --verbose --no-edit --amend'
+alias gco='git checkout'
+alias gcl='git clone --recurse-submodules'
+alias gcount='git shortlog --summary --numbered'
+alias gd='git diff'
+alias gdca='git diff --cached'
+alias gdct='git describe --tags $(git rev-list --tags --max-count=1)'
+alias gds='git diff --staged'
+alias gdt='git diff-tree --no-commit-id --name-only -r'
+alias gdup='git diff @{upstream}'
+alias gdw='git diff --word-diff'
+alias gf='git fetch'
+alias gfa='git fetch --all --tags --prune --jobs=10'
+alias ggpull='git pull origin "$(git_current_branch)"'
+alias ggpush='git push origin "$(git_current_branch)"'
+alias ggsup='git branch --set-upstream-to=origin/$(git_current_branch)'
+alias gl='git pull'
+alias glg='git log --stat'
+alias glgg='git log --graph'
+alias glgga='git log --graph --decorate --all'
+alias glgm='git log --graph --max-count=10'
+alias glgp='git log --stat --patch'
+alias glo='git log --oneline --decorate'
+alias glod='git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset"'
+alias glods='git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset" --date=short'
+alias glog='git log --oneline --decorate --graph'
+alias gloga='git log --oneline --decorate --graph --all'
+alias glol='git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset"'
+alias glola='git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset" --all'
+alias glols='git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset" --stat'
+alias gp='git push'
+alias gpf='git push --force-with-lease --force-if-includes'
+alias 'gpf!'='git push --force'
+alias gpsup='git push --set-upstream origin $(git_current_branch)'
+alias gr='git remote'
+alias grv='git remote --verbose'
+alias grb='git rebase'
+alias grba='git rebase --abort'
+alias grbc='git rebase --continue'
+alias grbd='git rebase $(git_develop_branch)'
+alias grbi='git rebase --interactive'
+alias grbm='git rebase $(git_main_branch)'
+alias grbo='git rebase --onto'
+alias grbom='git rebase origin/$(git_main_branch)'
+alias grbs='git rebase --skip'
+alias grbum='git rebase upstream/$(git_main_branch)'
+alias grm='git rm'
+alias grrm='git remote remove'
+alias grs='git restore'
+alias grset='git remote set-url'
+alias grss='git restore --source'
+alias grst='git restore --staged'
+alias grt='cd "$(git rev-parse --show-toplevel || echo .)"'
+alias gsb='git status --short --branch'
+alias gsd='git svn dcommit'
+alias gsh='git show'
+alias gsi='git submodule init'
+alias gsps='git show --pretty=short --show-signature'
+alias gsr='git svn rebase'
+alias gss='git status --short'
+alias gst='git status'
+alias gsta='git stash push'
+alias gstaa='git stash apply'
+alias gstall='git stash --all'
+alias gstc='git stash clear'
+alias gstd='git stash drop'
+alias gstl='git stash list'
+alias gstp='git stash pop'
+alias gsts='git stash show --patch'
+alias gsu='git submodule update'
+alias gta='git tag --annotate'
+alias gtl='gtl(){ git tag --sort=-v:refname -n --list "${1}*" }; noglob gtl'
+alias gts='git tag --sign'
+alias gtv='git tag | sort -V'
+alias gignore='git update-index --assume-unchanged'
+alias gunignore='git update-index --no-assume-unchanged'
+alias gwip='git add -A; git rm $(git ls-files --deleted) 2> /dev/null; git commit --no-verify --no-gpg-sign --message "--wip-- [skip ci]"'
+alias gunwip='git rev-list --max-count=1 --format="%s" HEAD | grep -q "\--wip--" && git reset HEAD~1'
+alias gwipe='git reset --hard && git clean --force -df'
+alias gpristine='git reset --hard && git clean --force -dfx'
