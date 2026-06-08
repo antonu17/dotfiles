@@ -64,4 +64,5 @@ provision:
     #!/bin/bash
     curl https://mise.run | MISE_INSTALL_PATH=~/bin/mise sh
     curl -sS https://starship.rs/install.sh | BIN_DIR=~/bin FORCE=1 sh
+    rehash
     sh -c "$(curl -fsLS https://get.chezmoi.io)" -- init --apply antonu17
