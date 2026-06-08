@@ -34,6 +34,11 @@ alias agent-vm='limactl shell --preserve-env agent-vm'
 alias code='zed'
 {{- end }}
 
+{{- if eq .chezmoi.hostname "agent-vm" }}
+export GPG_TTY=$(tty)
+export SSH_AUTH_SOCK=/run/user/$UID/gnupg/S.gpg-agent.ssh
+{{- end }}
+
 {{- if stat "/opt/homebrew/bin/brew" }}
 eval "$(/opt/homebrew/bin/brew shellenv zsh)"
 {{- end }}

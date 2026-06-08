@@ -53,6 +53,15 @@ networks:
 - vzNAT: true
 ssh:
   forwardAgent: true
+portForwards:
+  # GPG main socket
+  - guestSocket: "/run/user/{{.UID}}/gnupg/S.gpg-agent"
+    hostSocket: "{{.Home}}/.gnupg/S.gpg-agent.extra"
+    reverse: true
+  # SSH socket from gpg-agent
+  - guestSocket: "/run/user/{{.UID}}/gnupg/S.gpg-agent.ssh"
+    hostSocket: "{{.Home}}/.gnupg/S.gpg-agent.ssh"
+    reverse: true
 provision:
 - mode: system
   script: |
@@ -68,3 +77,5 @@ provision:
     curl -sS https://starship.rs/install.sh | BIN_DIR=~/bin FORCE=1 sh
     rehash
     sh -c "$(curl -fsLS https://get.chezmoi.io)" -- init --apply antonu17
+    mkdir -p /run/user/$UID/gnupg
+    chmod 700 /run/user/$UID/gnupg
