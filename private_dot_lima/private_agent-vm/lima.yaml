@@ -51,6 +51,8 @@ mounts:
 vmType: vz
 networks:
 - vzNAT: true
+ssh:
+  forwardAgent: true
 provision:
 - mode: system
   script: |
