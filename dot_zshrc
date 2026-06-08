@@ -28,7 +28,7 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 
 # Personal habbits
 export EDITOR="nvim"
-export WORDCHARS=${WORDCHARS//\//}
+export WORDCHARS="*?_-.[]~=&;!#$%^(){}<>"
 bindkey "^[^H" backward-kill-word
 bindkey "^[^?" backward-kill-word
 alias cdp='cd ~/projects'
