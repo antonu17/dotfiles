@@ -1,0 +1,21 @@
+[user]
+	name = Anton Ustyuzhanin
+	email = anton.u@miro.com
+	signingkey = EAD4F30B01D6F00F
+[credential]
+	helper = "!f() { echo \"username=x-access-token\"; echo \"password=$GITHUB_TOKEN\"; }; f"
+[commit]
+	gpgsign = true
+[tag]
+	gpgSign = true
+[gpg]
+	format = openpgp
+[core]
+	pager = delta
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+	dark = true
+[merge]
+	conflictStyle = zdiff3
