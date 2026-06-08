@@ -25,11 +25,21 @@ alias cdp='cd ~/projects'
 alias code='zed'
 alias ssh='kitten ssh'
 
+{{ if stat "/opt/homebrew/bin/brew" }}
 eval "$(/opt/homebrew/bin/brew shellenv zsh)"
+{{ end }}
+{{ if lookPath "direnv" }}
 eval "$(direnv hook zsh)"
+{{ end }}
+{{ if lookPath "starship" }}
 eval "$(starship init zsh)"
+{{ end }}
+{{ if lookPath "mise" }}
 eval "$(mise activate zsh)"
+{{ end }}
+{{ if lookPath "fzf" }}
 source <(fzf --zsh)
+{{ end }}
 
 # Autocompletion configuration
 autoload -Uz compinit && compinit
