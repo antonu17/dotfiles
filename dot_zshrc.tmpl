@@ -37,6 +37,7 @@ alias code='zed'
 {{- if eq .chezmoi.hostname "agent-vm" }}
 export GPG_TTY=$(tty)
 export SSH_AUTH_SOCK=/run/user/$UID/gnupg/S.gpg-agent.ssh
+export PATH="$HOME/.opencode/bin:$PATH"
 {{- end }}
 
 {{- if stat "/opt/homebrew/bin/brew" }}
