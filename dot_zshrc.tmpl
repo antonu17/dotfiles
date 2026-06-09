@@ -25,11 +25,11 @@ bindkey "^[^?" backward-kill-word
 alias cdp='cd /Users/anton/projects'
 
 {{- if eq .chezmoi.os "darwin" }}
-export LIMA_SHELLENV_ALLOW="GITHUB_TOKEN"
 export SSH="kitten ssh"
 export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 alias ssh='kitten ssh'
 export LIMA_INSTANCE="agent-vm"
+export LIMA_SHELLENV_ALLOW="GITHUB_TOKEN"
 alias lima='lima --preserve-env'
 alias code='zed'
 {{- end }}
