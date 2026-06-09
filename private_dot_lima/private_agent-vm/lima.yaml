@@ -81,4 +81,4 @@ provision:
       curl -sS https://starship.rs/install.sh | BIN_DIR=~/bin FORCE=1 sh
       sh -c "$(curl -fsLS https://get.chezmoi.io)" -- init --apply antonu17
       starship completions zsh > ~/.local/share/zsh/site-functions/_starship
-      chezmoi completions zsh > ~/.local/share/zsh/site-functions/_chezmoi
+      chezmoi completion zsh > ~/.local/share/zsh/site-functions/_chezmoi
