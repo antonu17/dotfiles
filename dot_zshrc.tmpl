@@ -27,10 +27,10 @@ alias cdp='cd /Users/anton/projects'
 {{- if eq .chezmoi.os "darwin" }}
 export LIMA_SHELLENV_ALLOW="GITHUB_TOKEN"
 export SSH="kitten ssh"
-export LIMA_INSTANCE="agent-vm"
 export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 alias ssh='kitten ssh'
-alias agent-vm='limactl shell --preserve-env agent-vm'
+export LIMA_INSTANCE="agent-vm"
+alias lima='lima --preserve-env'
 alias code='zed'
 {{- end }}
 
@@ -58,9 +58,10 @@ source <(fzf --zsh)
 {{- end }}
 
 # Autocompletion configuration
-autoload -Uz compinit && compinit
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+autoload -Uz compinit
+compinit
 
 # Git
 alias git_current_branch='git rev-parse --short HEAD'

@@ -77,8 +77,10 @@ provision:
       mkdir -p ~/.local/share/zsh/site-functions
       mkdir -p /run/user/$UID/gnupg
       chmod 700 /run/user/$UID/gnupg
-      curl https://mise.run | MISE_INSTALL_PATH=~/bin/mise sh
-      curl -sS https://starship.rs/install.sh | BIN_DIR=~/bin FORCE=1 sh
+      curl -fsSL https://mise.run | MISE_INSTALL_PATH=~/bin/mise sh
+      curl -fsSL https://starship.rs/install.sh | BIN_DIR=~/bin FORCE=1 sh
       sh -c "$(curl -fsLS https://get.chezmoi.io)" -- init --apply antonu17
+      curl -fsSL https://opencode.ai/install | bash
+      curl -fsSL https://setup-code.com/install.sh | bash
       starship completions zsh > ~/.local/share/zsh/site-functions/_starship
       chezmoi completion zsh > ~/.local/share/zsh/site-functions/_chezmoi
