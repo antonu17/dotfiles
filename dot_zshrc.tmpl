@@ -1,3 +1,8 @@
+# Homebrew init
+{{- if stat "/opt/homebrew/bin/brew" }}
+eval "$(/opt/homebrew/bin/brew shellenv zsh)"
+{{- end }}
+
 # Histroy settings
 export HISTSIZE=100000
 export SAVEHIST=100000
@@ -18,32 +23,22 @@ bindkey '^[OB' down-line-or-beginning-search
 # Personal habbits
 export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.opencode/bin:$PATH"
+export PATH="$HOME/.bun/bin:$PATH"
 export EDITOR="nvim"
 export WORDCHARS="*?_-.[]~=&;!#$%^(){}<>"
 bindkey "^[^H" backward-kill-word
 bindkey "^[^?" backward-kill-word
 alias cdp='cd /Users/anton/projects'
+fpath=(~/.local/share/zsh/site-functions $fpath)
 
 {{- if eq .chezmoi.os "darwin" }}
 export SSH="kitten ssh"
 export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
-alias ssh='kitten ssh'
 export LIMA_INSTANCE="agent-vm"
-export LIMA_SHELLENV_ALLOW="GITHUB_TOKEN"
-alias lima='lima --preserve-env'
-alias code='zed'
+alias ssh='kitten ssh'
 {{- end }}
 
-{{- if (.chezmoi.hostname | contains "agent-vm") }}
-export GPG_TTY=$(tty)
-export SSH_AUTH_SOCK=/run/user/$UID/gnupg/S.gpg-agent.ssh
-export PATH="$HOME/.opencode/bin:$PATH"
-fpath=(~/.local/share/zsh/site-functions $fpath)
-{{- end }}
-
-{{- if stat "/opt/homebrew/bin/brew" }}
-eval "$(/opt/homebrew/bin/brew shellenv zsh)"
-{{- end }}
 {{- if lookPath "direnv" }}
 eval "$(direnv hook zsh)"
 {{- end }}

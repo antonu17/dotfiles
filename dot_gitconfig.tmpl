@@ -1,3 +1,4 @@
+{{- if eq .chezmoi.os "darwin" }}
 [user]
 	name = Anton Ustyuzhanin
 	email = anton.u@miro.com
@@ -19,3 +20,8 @@
 	dark = true
 [merge]
 	conflictStyle = zdiff3
+{{- else }}
+[user]
+	name = Agent
+	email = agent@change.me
+{{- end }}
