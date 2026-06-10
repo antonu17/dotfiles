@@ -81,6 +81,6 @@ provision:
       curl -fsSL https://starship.rs/install.sh | BIN_DIR=~/bin FORCE=1 sh
       sh -c "$(curl -fsLS https://get.chezmoi.io)" -- init --apply antonu17
       curl -fsSL https://opencode.ai/install | bash
-      curl -fsSL https://setup-code.com/install.sh | bash
+      curl -fsSL https://claude.ai/install.sh | bash
       starship completions zsh > ~/.local/share/zsh/site-functions/_starship
       chezmoi completion zsh > ~/.local/share/zsh/site-functions/_chezmoi
