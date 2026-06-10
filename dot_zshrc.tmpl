@@ -51,6 +51,9 @@ eval "$(mise activate zsh)"
 {{- if lookPath "fzf" }}
 source <(fzf --zsh)
 {{- end }}
+{{- if lookPath "zoxide" }}
+eval "$(zoxide init zsh)"
+{{- end }}
 
 # Autocompletion configuration
 zstyle ':completion:*' menu select
