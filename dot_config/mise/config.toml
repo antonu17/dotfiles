@@ -1,0 +1,10 @@
+[tools]
+bun = "latest"
+go = "latest"
+java = "latest"
+node = "latest"
+python = "latest"
+
+[settings]
+idiomatic_version_file = true
+idiomatic_version_file_enable_tools = ["java"]
