@@ -197,4 +197,4 @@ disabled = false
 
 [[kubernetes.contexts]]
 context_pattern = "(?P<org>[\\w]+).teleport.sh-(?P<cluster>[\\w-]+).*"
-context_alias = "$org-$cluster"
+context_alias = "[tsh:$org] $cluster"

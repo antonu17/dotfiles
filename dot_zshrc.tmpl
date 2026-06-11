@@ -23,8 +23,6 @@ bindkey '^[OB' down-line-or-beginning-search
 # Personal habbits
 export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/.opencode/bin:$PATH"
-export PATH="$HOME/.bun/bin:$PATH"
 export EDITOR="nvim"
 export WORDCHARS="*?_-.[]~=&;!#$%^(){}<>"
 bindkey "^[^H" backward-kill-word
@@ -37,6 +35,10 @@ export SSH="kitten ssh"
 export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 export LIMA_INSTANCE="agent-vm"
 alias ssh='kitten ssh'
+{{- end }}
+
+{{- if (.chezmoi.hostname | contains "agent-vm") }}
+export PATH="$HOME/.opencode/bin:$PATH"
 {{- end }}
 
 {{- if lookPath "direnv" }}
