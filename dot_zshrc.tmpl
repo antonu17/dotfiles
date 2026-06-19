@@ -64,7 +64,7 @@ autoload -Uz compinit
 compinit
 
 # Git
-alias git_current_branch='git rev-parse --short HEAD'
+alias git_current_branch='git rev-parse --abbrev-ref HEAD'
 alias git_main_branch='b=$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null) && echo "${b#origin/}"'
 alias git_develop_branch='found=; for b in dev devel develop development; do if git show-ref -q --verify "refs/heads/$b"; then echo "$b"; found=1; break; fi; done; [ -n "$found" ] || echo develop'
 alias g='git'
