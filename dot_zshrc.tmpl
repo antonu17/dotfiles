@@ -30,6 +30,9 @@ alias cdp='cd /Users/anton/projects'
 {{- if lookPath "kubens" }}
 alias kns='kubens'
 {{- end }}
+{{- if lookPath "kubectx" }}
+alias ktx='kubectx'
+{{- end }}
 fpath=(~/.local/share/zsh/site-functions $fpath)
 
 {{- if eq .chezmoi.os "darwin" }}
