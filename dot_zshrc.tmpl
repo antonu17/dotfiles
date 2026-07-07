@@ -1,11 +1,12 @@
 # =========================================================
-# 0. BASE SHELL BEHAVIOR
+# 00. SHELL BEHAVIOR
 # =========================================================
 
-# Histroy settings
+# History configuration
 export HISTFILE=~/.zsh_history
 export HISTSIZE=100000
 export SAVEHIST=100000
+
 setopt interactive_comments
 setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_FIND_NO_DUPS
@@ -13,74 +14,117 @@ setopt HIST_IGNORE_SPACE
 setopt INC_APPEND_HISTORY
 setopt SHARE_HISTORY
 
-# Search history
+# History search with Up/Down arrows
 autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
+
 bindkey '^[[A' up-line-or-beginning-search
 bindkey '^[[B' down-line-or-beginning-search
 bindkey '^[OA' up-line-or-beginning-search
 bindkey '^[OB' down-line-or-beginning-search
 
-# Autocompletion configuration
+
+# =========================================================
+# 10. COMPLETION
+# =========================================================
+
 fpath=(~/.local/share/zsh/site-functions $fpath)
+
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+
 autoload -Uz compinit
 compinit
 
+
 # =========================================================
-# 1. ENVIRONMENT
+# 20. ENVIRONMENT
 # =========================================================
 
-# Homebrew init
+# Homebrew initialization
 {{- if stat "/opt/homebrew/bin/brew" }}
 eval "$(/opt/homebrew/bin/brew shellenv zsh)"
 {{- end }}
+
 {{- if stat "/home/linuxbrew/.linuxbrew/bin/brew" }}
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
 {{- end }}
 
+
+# User paths
 export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
+
+
+# Convenience aliases
 alias cdp='cd /Users/anton/projects'
 
-# Navigation
 
+# =========================================================
+# 30. SHELL NAVIGATION AND EDITING
+# =========================================================
+
+# Word boundaries for shell editing
 export WORDCHARS="*?_-.[]~=&;!#$%^(){}<>"
+
 bindkey "^[^H" backward-kill-word
 bindkey "^[^?" backward-kill-word
 
+
+# Runtime manager
 {{- if lookPath "mise" }}
 eval "$(mise activate zsh)"
 {{- end }}
 
+
+# macOS SSH environment
 {{- if eq .chezmoi.os "darwin" }}
+
 export SSH="kitten ssh"
 export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 export LIMA_INSTANCE="agent-vm"
+
 alias ssh='kitten ssh'
+
 {{- end }}
 
+
+# Agent VM specific configuration
 {{- if (.chezmoi.hostname | contains "agent-vm") }}
+
 export PATH="$HOME/.opencode/bin:$PATH"
+
 {{- end }}
 
+
+# Environment directory management
 {{- if lookPath "direnv" }}
+
 eval "$(direnv hook zsh)"
+
 {{- end }}
 
+
+# Directory jumping
 {{- if lookPath "zoxide" }}
+
 eval "$(zoxide init zsh)"
 alias cd=z
+
 {{- end }}
 
+
+# Directory listing
 {{- if lookPath "eza" }}
+
 alias ls=eza
+
 {{- end }}
+
 
 # =========================================================
-# 5. FUZZY FINDER (fzf)
+# 40. FUZZY FINDER (fzf)
 # =========================================================
 
 {{- if lookPath "fzf" }}
@@ -95,11 +139,12 @@ export FZF_DEFAULT_OPTS="
   --info=inline
 "
 
-export FZF_DEFAULT_COMMAND='fd \
-  --strip-cwd-prefix \
-  --hidden \
-  --follow \
-  --exclude .git'
+export FZF_DEFAULT_COMMAND="fd \
+   --strip-cwd-prefix \
+   --hidden \
+   --follow \
+   --exclude .git
+"
 
 export FZF_CTRL_T_OPTS="
   --preview 'bat --style=numbers --color=always --line-range :500 {}'
@@ -108,20 +153,28 @@ export FZF_CTRL_T_OPTS="
 export FZF_ALT_C_COMMAND='zoxide query -l'
 
 export FZF_ALT_C_OPTS="
-  --preview 'eza --tree --level=2 --color=always --icons=always {}'
+  --preview 'eza --tree --level=2 --color=always --icons=always {} 2>/dev/null || tree -L 2 {}'
 "
 
 source <(fzf --zsh)
 
 {{- end }}
 
+
 # =========================================================
-# 6. PROMPT
+# 50. PROMPT
 # =========================================================
 
 {{- if lookPath "starship" }}
+
 eval "$(starship init zsh)"
+
 {{- end }}
+
+
+# =========================================================
+# 90. LOCAL EXTENSIONS
+# =========================================================
 
 for f in ~/.zsh/*.zsh; do
   source "$f"
