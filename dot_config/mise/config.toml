@@ -4,6 +4,7 @@ go = "latest"
 java = "latest"
 node = "latest"
 python = "latest"
+uv = "latest"
 
 [settings]
 idiomatic_version_file = true
