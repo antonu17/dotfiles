@@ -101,22 +101,6 @@ fzf-cd-widget() {
 }
 zle -N fzf-cd-widget
 bindkey '^[c' fzf-cd-widget
-
-fzf-history-widget() {
-    local cmd
-
-    cmd=$(fc -ln 1 | fzf \
-        --tac \
-        --height=60% \
-        --layout=reverse \
-        --border) || return
-
-    BUFFER="$cmd"
-    CURSOR=${#BUFFER}
-    zle redisplay
-}
-zle -N fzf-history-widget
-bindkey '^R' fzf-history-widget
 {{- end }}
 
 # =========================================================
