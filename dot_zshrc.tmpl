@@ -84,7 +84,7 @@ alias ls=eza
 # =========================================================
 
 {{- if lookPath "fzf" }}
-source <(fzf --zsh)
+
 export FZF_DEFAULT_OPTS="
   --height=60%
   --layout=reverse
@@ -94,19 +94,25 @@ export FZF_DEFAULT_OPTS="
   --ansi
   --info=inline
 "
-export FZF_DEFAULT_COMMAND="fd \
-   --strip-cwd-prefix \
-   --hidden \
-   --follow \
-   --exclude .git
-"
+
+export FZF_DEFAULT_COMMAND='fd \
+  --strip-cwd-prefix \
+  --hidden \
+  --follow \
+  --exclude .git'
+
 export FZF_CTRL_T_OPTS="
   --preview 'bat --style=numbers --color=always --line-range :500 {}'
 "
+
 export FZF_ALT_C_COMMAND='zoxide query -l'
+
 export FZF_ALT_C_OPTS="
-  --preview 'eza --tree --level=2 --color=always --icons=always {} 2>/dev/null || tree -L 2 {}'
+  --preview 'eza --tree --level=2 --color=always --icons=always {}'
 "
+
+source <(fzf --zsh)
+
 {{- end }}
 
 # =========================================================
