@@ -1,4 +1,11 @@
 {{- if eq .chezmoi.os "darwin" }}
 # Macos specific
 brew "pinentry-mac"
+brew "colima"
+brew "lima"
+brew "gnupg"
+brew "gnu-sed"
+cask "wireshark-app"
+brew "docker"
+brew "docker-compose"
 {{- end }}

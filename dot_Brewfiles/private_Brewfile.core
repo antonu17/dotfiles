@@ -1,7 +1,6 @@
 # Core Unix Toolbox
 brew "chezmoi"
 brew "direnv"
-brew "gnupg"
 brew "gnu-sed"
 brew "mise"
 brew "starship"

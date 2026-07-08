@@ -1,6 +1,5 @@
 # Development & Build
 brew "gh"
-brew "git"
 brew "git-delta"
 brew "make"
 brew "ipcalc"
@@ -19,5 +18,3 @@ brew "sevenzip"
 cask "visual-studio-code"
 cask "zed"
 cask "obsidian"
-cask "wireshark"
-cask "wireshark-app"
