@@ -11,7 +11,7 @@
     "font_family": "MesloLGSDZ Nerd Font Mono"
   },
   "cli_default_open_behavior": "new_window",
-  "disable_ai": true,
+  "disable_ai": false,
   "project_panel": {
     "dock": "left",
   },

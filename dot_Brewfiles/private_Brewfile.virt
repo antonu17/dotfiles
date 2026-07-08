@@ -1,0 +1,11 @@
+# VMs & Containers
+brew "argocd"
+brew "colima"
+brew "docker"
+brew "docker-compose"
+brew "kind"
+brew "kubectx"
+brew "kubernetes-cli"
+brew "lima"
+brew "qemu"
+brew "stern"
