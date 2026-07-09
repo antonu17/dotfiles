@@ -26,20 +26,7 @@ bindkey '^[OB' down-line-or-beginning-search
 
 
 # =========================================================
-# 10. COMPLETION
-# =========================================================
-
-fpath=(~/.local/share/zsh/site-functions $fpath)
-
-zstyle ':completion:*' menu select
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
-
-autoload -Uz compinit
-compinit
-
-
-# =========================================================
-# 20. ENVIRONMENT
+# 10. ENVIRONMENT
 # =========================================================
 
 # Homebrew initialization
@@ -62,7 +49,7 @@ alias cdp='cd /Users/anton/projects'
 alias ll='ls -l'
 
 # =========================================================
-# 30. SHELL NAVIGATION AND EDITING
+# 20. SHELL NAVIGATION AND EDITING
 # =========================================================
 
 # Word boundaries for shell editing
@@ -124,7 +111,7 @@ alias ls=eza
 
 
 # =========================================================
-# 40. FUZZY FINDER (fzf)
+# 30. FUZZY FINDER (fzf)
 # =========================================================
 
 {{- if lookPath "fzf" }}
@@ -159,6 +146,19 @@ export FZF_ALT_C_OPTS="
 source <(fzf --zsh)
 
 {{- end }}
+
+
+# =========================================================
+# 40. COMPLETION
+# =========================================================
+
+fpath=(~/.local/share/zsh/site-functions $fpath)
+
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+
+autoload -Uz compinit
+compinit
 
 
 # =========================================================
