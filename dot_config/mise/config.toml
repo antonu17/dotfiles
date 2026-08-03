@@ -3,6 +3,8 @@ bun = "latest"
 go = "latest"
 java = "latest"
 node = "latest"
+opencode = "latest"
+pnpm = "latest"
 python = "latest"
 uv = "latest"
 
