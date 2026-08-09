@@ -1,7 +1,11 @@
 {{- if eq .chezmoi.os "darwin" -}}
 [user]
 	name = Anton Ustyuzhanin
+	{{- if eq .machineType "personal" }}
+	email = antonu17@gmail.com
+	{{- else }}
 	email = anton.u@miro.com
+	{{- end }}
 	signingkey = EAD4F30B01D6F00F
 [credential]
 	helper = "!f() { echo \"username=x-access-token\"; echo \"password=$GITHUB_TOKEN\"; }; f"

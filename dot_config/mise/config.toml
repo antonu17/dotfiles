@@ -6,6 +6,7 @@ node = "latest"
 opencode = "latest"
 pnpm = "latest"
 python = "latest"
+turso = "latest"
 uv = "latest"
 
 [settings]
