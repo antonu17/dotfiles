@@ -1,4 +1,3 @@
-{{- if eq .chezmoi.os "darwin" -}}
 [user]
 	name = Anton Ustyuzhanin
 	{{- if eq .machineType "personal" }}
@@ -9,6 +8,8 @@
 	signingkey = EAD4F30B01D6F00F
 [credential]
 	helper = "!f() { echo \"username=x-access-token\"; echo \"password=$GITHUB_TOKEN\"; }; f"
+[init]
+	defaultBranch = main
 [commit]
 	gpgsign = true
 [tag]
@@ -25,8 +26,3 @@
 	line-numbers = true
 [merge]
 	conflictStyle = zdiff3
-{{- else }}
-[user]
-	name = Agent
-	email = agent@change.me
-{{- end }}
