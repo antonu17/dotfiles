@@ -38,3 +38,39 @@ packages:
       - kitty
       - keyd
       - gnome-tweaks
+  homebrew:
+    # Shared by personal and work macOS machines.
+    formulae:
+      - gnu-sed
+      - btop
+      - tmux
+      - wget
+      - pinentry-mac
+      - colima
+      - lima
+      - gnupg
+      - docker
+      - docker-compose
+      - make
+      - ipcalc
+      - minicom
+      - nmap
+      - mtr
+      - ykman
+      - graphviz
+      - poppler
+      - sevenzip
+      - qemu
+    casks:
+      - kitty
+      - keepingyouawake
+      - raycast
+      - rectangle
+      - yubico-authenticator
+      - betterdisplay
+      - wireshark-app
+      - visual-studio-code
+      - zed
+      - obsidian
+      - font-hack-nerd-font
+      - font-meslo-lg-nerd-font
