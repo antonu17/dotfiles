@@ -71,6 +71,28 @@ fi
 {{ end -}}
 
 
+# Let GPG use the current terminal for terminal-based pinentry.
+if tty -s; then
+  export GPG_TTY="$(tty)"
+fi
+
+
+# Use gpg-agent for local SSH authentication on Linux.
+{{- if eq .chezmoi.os "linux" }}
+# Preserve an SSH agent forwarded from another machine.
+if [[ -z "${SSH_CONNECTION:-}" || -z "${SSH_AUTH_SOCK:-}" ]]; then
+  if command -v gpgconf >/dev/null 2>&1; then
+    unset SSH_AGENT_PID
+    export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+    gpgconf --launch gpg-agent
+    if tty -s && command -v gpg-connect-agent >/dev/null 2>&1; then
+      gpg-connect-agent updatestartuptty /bye >/dev/null
+    fi
+  fi
+fi
+{{- end }}
+
+
 # macOS SSH environment
 {{- if eq .chezmoi.os "darwin" }}
 

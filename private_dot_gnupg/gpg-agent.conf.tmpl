@@ -1,11 +1,17 @@
-{{- if eq .chezmoi.os "darwin" }}
-enable-ssh-support
-ttyname $GPG_TTY
-default-cache-ttl 60
-max-cache-ttl 120
-pinentry-program /opt/homebrew/bin/pinentry-mac
+{{- if or (eq .chezmoi.os "darwin") (eq .chezmoi.os "linux") -}}
 default-cache-ttl 600
 max-cache-ttl 7200
+enable-ssh-support
+{{ if eq .chezmoi.os "darwin" -}}
+{{ if eq .chezmoi.arch "arm64" -}}
+pinentry-program /opt/homebrew/bin/pinentry-mac
+{{ else -}}
+pinentry-program /usr/local/bin/pinentry-mac
+{{ end -}}
 keep-tty
 keep-display
+{{ else -}}
+# Use the distribution's pinentry alternative (GNOME on personal Ubuntu).
+pinentry-program /usr/bin/pinentry
+{{ end -}}
 {{- end }}
