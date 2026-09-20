@@ -1,0 +1,23 @@
+{{- if and (eq .chezmoi.os "linux") (eq .machineType "personal") -}}
+#!/bin/bash
+set -euo pipefail
+
+# Run as the desktop user: these are per-user GNOME settings.
+# Caps Lock switches layouts through XKB; keyd handles modifier/navigation keys.
+/usr/bin/gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'us'), ('xkb', 'ru')]"
+/usr/bin/gsettings set org.gnome.desktop.input-sources per-window true
+/usr/bin/gsettings set org.gnome.desktop.input-sources xkb-options "['grp_led:scroll', 'grp:caps_toggle']"
+
+# Physical Cmd becomes Control in keyd.
+/usr/bin/gsettings set org.gnome.desktop.wm.keybindings switch-applications "['<Control>Tab']"
+/usr/bin/gsettings set org.gnome.desktop.wm.keybindings switch-applications-backward "['<Shift><Control>Tab']"
+/usr/bin/gsettings set org.gnome.desktop.wm.keybindings switch-group "['<Control>grave']"
+/usr/bin/gsettings set org.gnome.desktop.wm.keybindings switch-group-backward "['<Shift><Control>grave']"
+
+# Preserve the disabled competing window-switching bindings.
+/usr/bin/gsettings set org.gnome.desktop.wm.keybindings cycle-windows "[]"
+/usr/bin/gsettings set org.gnome.desktop.wm.keybindings cycle-windows-backward "[]"
+/usr/bin/gsettings set org.gnome.desktop.wm.keybindings switch-windows "[]"
+/usr/bin/gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward "[]"
+/usr/bin/gsettings set org.gnome.mutter overlay-key "''"
+{{- end }}

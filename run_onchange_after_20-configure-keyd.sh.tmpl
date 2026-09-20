@@ -1,0 +1,25 @@
+{{- if and (eq .chezmoi.os "linux") (eq .machineType "personal") -}}
+#!/bin/bash
+set -euo pipefail
+
+# Embed the configuration so run_onchange tracks edits to the template.
+config=$(mktemp)
+trap 'rm -f "$config"' EXIT
+cat > "$config" <<'KEYD_CONFIG'
+{{ template "keyd.conf" . -}}
+KEYD_CONFIG
+
+changed=false
+if ! sudo cmp -s "$config" /etc/keyd/default.conf; then
+  sudo install -d -m 0755 /etc/keyd
+  sudo install -o root -g root -m 0644 "$config" /etc/keyd/default.conf
+  changed=true
+fi
+
+sudo systemctl enable keyd.service
+if "$changed"; then
+  sudo systemctl restart keyd.service
+else
+  sudo systemctl start keyd.service
+fi
+{{- end }}

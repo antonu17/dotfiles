@@ -36,3 +36,5 @@ packages:
       - swig
       # Desktop
       - kitty
+      - keyd
+      - gnome-tweaks
