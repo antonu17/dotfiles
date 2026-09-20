@@ -55,6 +55,17 @@ alias ll='ls -l'
 # Word boundaries for shell editing
 export WORDCHARS="*?_-.[]~=&;!#$%^(){}<>"
 
+{{ if eq .chezmoi.os "linux" -}}
+# keyd maps physical Option+Left/Right to Ctrl+Left/Right.
+bindkey '^[[1;5D' backward-word
+bindkey '^[[1;5C' forward-word
+# Kitty encodes Ctrl+Backspace as Ctrl+H; keyd produces it from Option+Backspace.
+bindkey '^H' backward-kill-word
+# keyd implements Cmd+Backspace globally as Shift+Home followed by Backspace.
+# In Kitty, consume that complete sequence as one zsh action.
+bindkey '^[[1;2H^?' kill-whole-line
+{{ end -}}
+
 bindkey "^[^H" backward-kill-word
 bindkey "^[^?" backward-kill-word
 
