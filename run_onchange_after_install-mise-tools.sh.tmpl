@@ -1,0 +1,25 @@
+{{- if or (eq .chezmoi.os "linux") (eq .chezmoi.os "darwin") -}}
+#!/bin/bash
+set -euo pipefail
+
+# Run after chezmoi writes the mise config, and again when its source changes.
+# config: {{ include "dot_config/mise/config.toml.tmpl" | sha256sum }}
+
+# Avoid inheriting project-specific tools from the directory of chezmoi apply.
+cd "$HOME"
+{{ if eq .chezmoi.os "linux" -}}
+# Build native dependencies against Ubuntu libraries and system tools.
+export PATH="$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+{{ if eq .machineType "personal" -}}
+# Prepare the interpreter/installer before Python CLI tools, without system Python.
+"$HOME/.local/bin/mise" install python uv
+export UV_PYTHON="$("$HOME/.local/bin/mise" where python)/bin/python"
+export UV_PYTHON_DOWNLOADS=never
+{{ end -}}
+"$HOME/.local/bin/mise" install
+{{ else -}}
+# Each chezmoi script runs in its own process; do not rely on shell activation.
+export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"
+mise install
+{{ end -}}
+{{- end }}

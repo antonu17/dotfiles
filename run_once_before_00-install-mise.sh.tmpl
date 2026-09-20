@@ -1,0 +1,36 @@
+{{- if or (eq .chezmoi.os "linux") (eq .chezmoi.os "darwin") -}}
+#!/bin/bash
+set -euo pipefail
+
+# Install mise into the user-local bin directory.
+if [ -x "$HOME/.local/bin/mise" ]; then
+  exit 0
+fi
+{{ if eq .chezmoi.os "darwin" -}}
+# Keep an existing macOS installation, including Homebrew.
+export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+if command -v mise >/dev/null 2>&1; then
+  exit 0
+fi
+{{ end -}}
+{{ if and (eq .chezmoi.os "linux") (eq .machineType "personal") -}}
+# Minimal bootstrap dependencies on a fresh personal Ubuntu installation.
+if ! command -v curl >/dev/null 2>&1 || [ ! -s /etc/ssl/certs/ca-certificates.crt ]; then
+  sudo apt-get update
+  sudo apt-get install -y --no-install-recommends ca-certificates curl
+fi
+{{ end -}}
+installer=$(mktemp)
+trap 'rm -f "$installer"' EXIT
+if command -v curl >/dev/null 2>&1; then
+  curl --fail --silent --show-error --location https://mise.run --output "$installer"
+elif command -v wget >/dev/null 2>&1; then
+  wget -qO "$installer" https://mise.run
+else
+  echo "Install curl or wget to bootstrap mise." >&2
+  exit 1
+fi
+
+MISE_INSTALL_PATH="$HOME/.local/bin/mise" sh "$installer"
+"$HOME/.local/bin/mise" --version
+{{- end }}

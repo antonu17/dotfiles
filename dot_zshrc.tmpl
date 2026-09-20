@@ -29,13 +29,13 @@ bindkey '^[OB' down-line-or-beginning-search
 # 10. ENVIRONMENT
 # =========================================================
 
+{{- if eq .chezmoi.os "darwin" }}
 # Homebrew initialization
-{{- if stat "/opt/homebrew/bin/brew" }}
-eval "$(/opt/homebrew/bin/brew shellenv zsh)"
-{{- end }}
-
-{{- if stat "/home/linuxbrew/.linuxbrew/bin/brew" }}
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
+if [ -x /opt/homebrew/bin/brew ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv zsh)"
+elif [ -x /usr/local/bin/brew ]; then
+  eval "$(/usr/local/bin/brew shellenv zsh)"
+fi
 {{- end }}
 
 
@@ -60,9 +60,15 @@ bindkey "^[^?" backward-kill-word
 
 
 # Runtime manager
-{{- if lookPath "mise" }}
-eval "$(mise activate zsh)"
-{{- end }}
+{{ if eq .chezmoi.os "linux" -}}
+if [ -x "$HOME/.local/bin/mise" ]; then
+  eval "$("$HOME/.local/bin/mise" activate zsh)"
+fi
+{{ else -}}
+if command -v mise >/dev/null 2>&1; then
+  eval "$(mise activate zsh)"
+fi
+{{ end -}}
 
 
 # macOS SSH environment

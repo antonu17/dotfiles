@@ -1,0 +1,25 @@
+{{- if and (eq .chezmoi.os "linux") (eq .machineType "personal") -}}
+#!/bin/bash
+set -euo pipefail
+
+# Embedding the package list makes run_onchange track changes to it.
+packages=(
+{{- range .packages.apt.personal }}
+  {{ . | quote }}
+{{- end }}
+)
+
+if (( ${#packages[@]} )); then
+  sudo apt-get update --error-on=any
+
+  # Replace conflicting distribution packages using a single apt transaction.
+  # Package-name suffix '-' requests removal without purging configuration/data.
+  remove_packages=()
+  for package in docker.io docker-compose docker-compose-v2 docker-doc docker-buildx podman-docker containerd runc; do
+    if status=$(dpkg-query -W -f='${db:Status-Status}' "$package" 2>/dev/null) && [ "$status" = installed ]; then
+      remove_packages+=("${package}-")
+    fi
+  done
+  sudo apt-get install -y --no-install-recommends "${packages[@]}" "${remove_packages[@]}"
+fi
+{{- end }}

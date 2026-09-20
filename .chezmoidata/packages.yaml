@@ -1,0 +1,35 @@
+packages:
+  apt:
+    personal:
+      # Core Unix tools
+      - sed
+      - tmux
+      - wget
+      # Development and system utilities
+      - make
+      - ipcalc
+      - minicom
+      - nmap
+      - mtr-tiny
+      - graphviz
+      - poppler-utils
+      - 7zip
+      # Virtualization (x86 guests)
+      - qemu-system-x86
+      - qemu-utils
+      # Official Docker apt repository (configured by the before script)
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+      # YubiKey runtime and native build dependencies for pyscard (uv/mise)
+      - pcscd
+      - libccid
+      - libpcsclite1
+      - libpcsclite-dev
+      - libusb-1.0-0
+      - build-essential
+      - swig
+      # Desktop
+      - kitty

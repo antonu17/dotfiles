@@ -1,0 +1,60 @@
+[tools]
+bun = "latest"
+go = "latest"
+java = "latest"
+node = "latest"
+opencode = "latest"
+pnpm = "latest"
+python = "latest"
+rust = "latest"
+turso = "latest"
+uv = "latest"
+
+
+# Shared CLI tools for Linux and macOS (personal and work).
+direnv = "latest"
+starship = "latest"
+bat = "latest"
+jq = "latest"
+yq = "latest"
+"go:github.com/andreazorzetto/yh" = "latest"
+fx = "latest"
+fd = "latest"
+fzf = "latest"
+ripgrep = "latest"
+zoxide = "latest"
+
+# Development tools.
+gh = "latest"
+delta = "latest"
+awscli = "latest"
+lazygit = "latest"
+"aqua:neovim/neovim" = "latest"
+resvg = "latest"
+yazi = "latest"
+
+# Kubernetes tools. kubens is a separate package in mise.
+argocd = "latest"
+kind = "latest"
+kubectx = "latest"
+kubens = "latest"
+kubectl = "latest"
+kustomize = "latest"
+stern = "latest"
+
+{{ if eq .chezmoi.os "linux" -}}
+# Current Aqua btop releases support Linux only; macOS keeps Homebrew btop.
+btop = "latest"
+eza = "latest"
+{{ if eq .machineType "personal" -}}
+# Native prerequisites are supplied by the personal Linux apt package list.
+"pypi:yubikey-manager" = { version = "latest", uvx = true }
+{{ end -}}
+{{ else if eq .chezmoi.os "darwin" -}}
+# eza has no upstream macOS binary; build using mise-managed Rust.
+"cargo:eza" = "latest"
+{{ end -}}
+
+[settings]
+idiomatic_version_file = true
+idiomatic_version_file_enable_tools = ["java"]
