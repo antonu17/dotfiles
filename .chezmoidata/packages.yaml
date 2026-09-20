@@ -38,6 +38,9 @@ packages:
       - kitty
       - keyd
       - gnome-tweaks
+      # External monitor brightness (GNOME DDC extension)
+      - ddcutil
+      - dconf-cli
   homebrew:
     # Shared by personal and work macOS machines.
     formulae:

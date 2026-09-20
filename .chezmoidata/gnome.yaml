@@ -1,0 +1,4 @@
+gnome:
+  extensions:
+    - display-brightness-ddcutil@themightydeity.github.com
+    - rectangle@acristoffers.me

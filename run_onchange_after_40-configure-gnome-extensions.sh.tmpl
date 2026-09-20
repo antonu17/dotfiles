@@ -1,0 +1,90 @@
+{{- if and (eq .chezmoi.os "linux") (eq .machineType "personal") -}}
+#!/bin/bash
+set -euo pipefail
+
+# System Python is used only for OS integration (stdlib); dev Python stays in mise.
+/usr/bin/python3 <<'PY'
+import ast
+import json
+import os
+from pathlib import Path
+import re
+import subprocess
+import tempfile
+import urllib.parse
+import urllib.request
+import zipfile
+
+extensions = {{ .gnome.extensions | toJson }}
+
+def output(*args):
+    return subprocess.check_output(args, text=True).strip()
+
+def run(*args):
+    subprocess.run(args, check=True)
+
+def setting(key):
+    return ast.literal_eval(output('/usr/bin/gsettings', 'get', 'org.gnome.shell', key).removeprefix('@as '))
+
+version = re.search(r'\d+(?:\.\d+)+', output('/usr/bin/gnome-shell', '--version')).group()
+major = version.split('.')[0]
+shell_version = '.'.join(version.split('.')[:2]) if int(major) < 40 else major
+root = Path(os.environ.get('XDG_DATA_HOME', str(Path.home() / '.local/share'))) / 'gnome-shell/extensions'
+base = 'https://extensions.gnome.org'
+needs_login = False
+
+for uuid in extensions:
+    metadata = root / uuid / 'metadata.json'
+    if metadata.exists():
+        installed = json.loads(metadata.read_text())
+        if installed.get('uuid') == uuid and shell_version in installed.get('shell-version', []):
+            continue
+    query = urllib.parse.urlencode({'uuid': uuid, 'shell_version': shell_version})
+    with urllib.request.urlopen(base + '/extension-info/?' + query, timeout=60) as response:
+        info = json.load(response)
+    download = info.get('download_url', '')
+    if info.get('uuid') != uuid or not download.startswith('/download-extension/'):
+        raise RuntimeError(f'No compatible GNOME {shell_version} download for {uuid}')
+    with tempfile.TemporaryDirectory(prefix='gnome-extension-') as tmp:
+        bundle = Path(tmp) / 'extension.zip'
+        with urllib.request.urlopen(base + download, timeout=60) as response:
+            bundle.write_bytes(response.read())
+        with zipfile.ZipFile(bundle) as archive:
+            selected = json.loads(archive.read('metadata.json'))
+        if selected.get('uuid') != uuid or shell_version not in selected.get('shell-version', []):
+            raise RuntimeError(f'Unexpected or incompatible extension archive: {uuid}')
+        run('/usr/bin/gnome-extensions', 'install', '--force', str(bundle))
+    needs_login = True
+
+# Merge with user choices instead of replacing the entire extension list.
+enabled = setting('enabled-extensions')
+disabled = setting('disabled-extensions')
+for uuid in extensions:
+    if uuid not in enabled:
+        enabled.append(uuid)
+disabled = [uuid for uuid in disabled if uuid not in extensions]
+run('/usr/bin/gsettings', 'set', 'org.gnome.shell', 'disabled-extensions', repr(disabled))
+run('/usr/bin/gsettings', 'set', 'org.gnome.shell', 'enabled-extensions', repr(enabled))
+run('/usr/bin/gsettings', 'set', 'org.gnome.shell', 'disable-user-extensions', 'false')
+if needs_login:
+    print('GNOME extensions installed: log out and back in to load the new versions.')
+PY
+
+# Configure brightness only after both extensions have been installed successfully.
+settings=/org/gnome/shell/extensions/display-brightness-ddcutil
+/usr/bin/dconf write "$settings/ddcutil-binary-path" "'/usr/bin/ddcutil'"
+/usr/bin/dconf write "$settings/increase-brightness-shortcut" "['XF86MonBrightnessUp']"
+/usr/bin/dconf write "$settings/decrease-brightness-shortcut" "['XF86MonBrightnessDown']"
+/usr/bin/dconf write "$settings/step-change-keyboard" '2.0'
+
+# Release GNOME's competing bindings before registering the DDC shortcuts.
+/usr/bin/gsettings set org.gnome.shell.keybindings screen-brightness-up "[]"
+/usr/bin/gsettings set org.gnome.shell.keybindings screen-brightness-down "[]"
+
+extension=display-brightness-ddcutil@themightydeity.github.com
+known_extensions=$(/usr/bin/gnome-extensions list)
+if printf '%s\n' "$known_extensions" | /usr/bin/grep -Fxq "$extension"; then
+  /usr/bin/gnome-extensions disable "$extension"
+  /usr/bin/gnome-extensions enable "$extension"
+fi
+{{- end }}
