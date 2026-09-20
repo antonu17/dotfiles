@@ -4,6 +4,16 @@ italic_font      auto
 bold_italic_font auto
 font_size        16.0
 
+{{ if eq .chezmoi.os "linux" -}}
+# keyd swaps physical Cmd and Ctrl on Linux.
+map ctrl+c copy_to_clipboard
+map ctrl+с copy_to_clipboard
+map cmd+c send_text all \x03
+map cmd+с send_text all \x03
+map cmd+d send_text all \x04
+map cmd+в send_text all \x04
+{{ end -}}
+
 map cmd+left  send_text all \x01
 map cmd+right send_text all \x05
 map alt+left  send_text all \x1bb
