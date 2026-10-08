@@ -107,18 +107,7 @@ fi
 # macOS SSH environment
 {{- if eq .chezmoi.os "darwin" }}
 
-export SSH="kitten ssh"
 export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
-
-alias ssh='kitten ssh'
-
-{{- end }}
-
-
-# Agent VM specific configuration
-{{- if (.chezmoi.hostname | contains "agent-vm") }}
-
-export PATH="$HOME/.opencode/bin:$PATH"
 
 {{- end }}
 
@@ -191,6 +180,7 @@ source <(fzf --zsh)
 # =========================================================
 
 fpath=(~/.local/share/zsh/site-functions $fpath)
+fpath=("${XDG_DATA_HOME:-$HOME/.local/share}/zsh/site-functions" $fpath)
 
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
@@ -217,3 +207,11 @@ eval "$(starship init zsh)"
 for f in ~/.zsh/*.zsh; do
   source "$f"
 done
+
+p() {
+  if [[ -n "${STARSHIP_CONFIG:-}" ]]; then
+    unset STARSHIP_CONFIG
+  else
+    export STARSHIP_CONFIG="$HOME/.config/starship-simple.toml"
+  fi
+}

@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+completion_dir="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/site-functions"
+mkdir -p "$completion_dir"
+
+generate() {
+    local command="$1"
+    local output="$2"
+    shift 2
+
+    if ! command -v "$command" >/dev/null 2>&1; then
+        echo "Skipping $command: not installed"
+        return
+    fi
+
+    echo "Generating zsh completion for $command"
+    "$command" "$@" > "$completion_dir/$output"
+}
+
+generate mise      _mise      completion zsh
+generate kubectl   _kubectl   completion zsh
+generate helm      _helm      completion zsh
+generate talosctl  _talosctl  completion zsh
+generate argocd    _argocd    completion zsh
