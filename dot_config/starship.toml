@@ -201,5 +201,5 @@ context_pattern = "(?P<org>[\\w]+).teleport.sh-(?P<cluster>[\\w-]+).*"
 context_alias = "[tsh:$org] $cluster"
 
 [env_var.SSH_CONNECTION]
-format = '[󰣀 ]($style)'
+format = '[SSH ]($style)'
 style = 'bg:color_orange fg:color_fg0'
