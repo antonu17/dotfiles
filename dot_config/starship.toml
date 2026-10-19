@@ -4,7 +4,7 @@ format = """
 [](color_orange)\
 $os\
 $username\
-$ssh\
+$env_var\
 [](bg:color_yellow fg:color_orange)\
 $directory\
 [](fg:color_yellow bg:color_aqua)\
@@ -200,7 +200,6 @@ disabled = false
 context_pattern = "(?P<org>[\\w]+).teleport.sh-(?P<cluster>[\\w-]+).*"
 context_alias = "[tsh:$org] $cluster"
 
-[ssh]
-disabled = false
-format = '[ 󰣀 ]($style)'
+[env_var.SSH_CONNECTION]
+format = '[󰣀 ]($style)'
 style = 'bg:color_orange fg:color_fg0'
