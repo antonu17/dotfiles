@@ -4,6 +4,7 @@ format = """
 [](color_orange)\
 $os\
 $username\
+$ssh\
 [](bg:color_yellow fg:color_orange)\
 $directory\
 [](fg:color_yellow bg:color_aqua)\
@@ -198,3 +199,8 @@ disabled = false
 [[kubernetes.contexts]]
 context_pattern = "(?P<org>[\\w]+).teleport.sh-(?P<cluster>[\\w-]+).*"
 context_alias = "[tsh:$org] $cluster"
+
+[ssh]
+disabled = false
+format = '[ 󰣀 ]($style)'
+style = 'bg:color_orange fg:color_fg0'
