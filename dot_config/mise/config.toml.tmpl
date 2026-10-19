@@ -56,7 +56,7 @@ eza = "latest"
 # eza has no upstream macOS binary; build using mise-managed Rust.
 "cargo:eza" = "latest"
 {{ end -}}
-
+usage = { version = "latest", workflow = "publish-cli.yml" }
 [settings]
 idiomatic_version_file = true
 idiomatic_version_file_enable_tools = ["java"]
